@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.0.1
+
+* Fixed an error on every spell tooltip on current Classic Era clients, where
+  `GetSpellInfo` and the other spell globals have moved into the `C_Spell`
+  namespace.
+* All game API access now goes through a compatibility layer that works with
+  either API shape and degrades quietly when a call is unavailable.
+* A failure while building a tooltip is now reported once instead of erroring
+  on every hover.
+* Tests run against the current API, the legacy API, and a client exposing
+  neither.
+
 ## 1.0.0
 
 * Spell power coefficients added to spell tooltips in the spellbook, on action

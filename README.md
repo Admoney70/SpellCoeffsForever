@@ -68,6 +68,11 @@ of their scaling per level below 20, so a level 1 rank keeps 28.75%. Classic
 Era does **not** have the level-based downranking penalty introduced in The
 Burning Crusade, so no such penalty is applied here.
 
+Every game API the addon reads goes through `Compat.lua`, which prefers the
+`C_Spell` and `C_AddOns` namespaces used by current clients and falls back to
+the old globals. When an API is missing entirely the accessor returns nothing
+and the affected line is simply left out.
+
 Two limitations are worth knowing:
 
 * The client does not expose a spell's school in Classic, so the gear-adjusted
@@ -80,10 +85,14 @@ the formulas still apply, but those per-spell corrections are skipped.
 
 ## Tests
 
-The coefficient maths runs outside the game against a small stub of the WoW API:
+The coefficient maths runs outside the game against a small stub of the WoW API.
+The stub can present the current `C_Spell` namespace, the older globals, or
+neither, so an API rename shows up as a test failure instead of a tooltip error:
 
 ```sh
-lua5.4 tests/test_coefficients.lua
+lua5.4 tests/test_coefficients.lua modern
+lua5.4 tests/test_coefficients.lua legacy
+lua5.4 tests/test_bare_client.lua
 ```
 
 ## Contributing

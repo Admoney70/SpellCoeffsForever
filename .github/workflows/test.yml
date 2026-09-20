@@ -12,6 +12,10 @@ jobs:
       - name: Install Lua
         run: sudo apt-get update && sudo apt-get install -y lua5.4
       - name: Syntax check
-        run: luac5.4 -p Data.lua Core.lua Options.lua || lua5.4 -e 'for _,f in ipairs{"Data.lua","Core.lua","Options.lua"} do assert(loadfile(f)) end'
-      - name: Run tests
-        run: lua5.4 tests/test_coefficients.lua
+        run: lua5.4 -e 'for _,f in ipairs{"Compat.lua","Data.lua","Core.lua","Options.lua"} do assert(loadfile(f)) end'
+      - name: Run tests against the current client API
+        run: lua5.4 tests/test_coefficients.lua modern
+      - name: Run tests against the legacy client API
+        run: lua5.4 tests/test_coefficients.lua legacy
+      - name: Run tests with no spell API present
+        run: lua5.4 tests/test_bare_client.lua

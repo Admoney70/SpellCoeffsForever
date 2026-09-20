@@ -2,9 +2,10 @@
 
 local ADDON, SCF = ...
 local Data = SCF.Data
+local API = SCF.API
 
 SCF.name = ADDON
-SCF.version = GetAddOnMetadata and GetAddOnMetadata(ADDON, "Version") or "1.0.0"
+SCF.version = API.GetAddOnVersion(ADDON)
 
 local DEFAULTS = {
     enabled = true,
@@ -22,15 +23,10 @@ local function round(value, places)
     return math.floor(value * mult + 0.5) / mult
 end
 
--- Level of the rank being inspected, used for the sub-level-20 penalty.
+-- Level of the rank being inspected, used for the sub-level-20 penalty. The
+-- client is asked first; the static table only covers what it will not answer.
 local function GetSpellLevel(spellID)
-    if spellID and GetSpellLevelLearned then
-        local ok, level = pcall(GetSpellLevelLearned, spellID)
-        if ok and type(level) == "number" and level > 0 then
-            return level
-        end
-    end
-    return spellID and Data.rankLevels[spellID] or nil
+    return API.GetSpellLevel(spellID) or (spellID and Data.rankLevels[spellID]) or nil
 end
 
 -- Classic Era has no TBC-style downranking penalty. The only scaling penalty
@@ -46,12 +42,7 @@ function SCF:GetLevelPenalty(spellLevel)
 end
 
 local function CastSeconds(spellID)
-    if not spellID then return nil end
-    local _, _, _, castTime = GetSpellInfo(spellID)
-    if type(castTime) ~= "number" or castTime <= 0 then
-        return nil
-    end
-    return castTime / 1000
+    return API.GetCastTime(spellID)
 end
 
 ------------------------------------------------------------------------------
@@ -141,17 +132,12 @@ end
 -- spell's school, so damage spells use the highest school bonus on the player.
 function SCF:GetSpellPower(effect)
     if effect == "healing" then
-        if GetSpellBonusHealing then
-            return GetSpellBonusHealing() or 0, "healing power"
-        end
-        return 0, "healing power"
+        return API.GetSpellBonusHealing(), "healing power"
     end
     local best = 0
-    if GetSpellBonusDamage then
-        for school = 2, 7 do
-            local bonus = GetSpellBonusDamage(school) or 0
-            if bonus > best then best = bonus end
-        end
+    for school = 2, 7 do
+        local bonus = API.GetSpellBonusDamage(school)
+        if bonus > best then best = bonus end
     end
     return best, "spell damage"
 end
@@ -178,7 +164,7 @@ local shown = {}
 function SCF:Render(tooltip, spellID, spellName)
     local db = SpellCoeffsForeverDB
     if not db or not db.enabled then return end
-    if db.modifierOnly and not IsShiftKeyDown() then return end
+    if db.modifierOnly and not API.IsShiftDown() then return end
 
     local result = self:GetCoefficients(spellID, spellName)
     if not result then return end
@@ -216,17 +202,28 @@ function SCF:Render(tooltip, spellID, spellName)
 end
 
 local function OnSpellTooltip(tooltip)
-    if not tooltip or tooltip:IsForbidden() then return end
+    if not tooltip then return end
+    if tooltip.IsForbidden and tooltip:IsForbidden() then return end
     if shown[tooltip] then return end
-    local name, spellID = tooltip:GetSpell()
+
+    local name, spellID = API.GetTooltipSpell(tooltip)
     if not name then return end
+
     shown[tooltip] = true
-    SCF:Render(tooltip, spellID, name)
+
+    local ok, err = pcall(SCF.Render, SCF, tooltip, spellID, name)
+    if not ok and not SCF.reportedError then
+        SCF.reportedError = true
+        print(string.format("|cff66c7ffSpellCoeffsForever|r error on %s: %s",
+            tostring(name), tostring(err)))
+    end
 end
 
 local function ClearGuard(tooltip)
     shown[tooltip] = nil
 end
+
+SCF.OnSpellTooltip = OnSpellTooltip
 
 function SCF:HookTooltips()
     local targets = { GameTooltip, ItemRefTooltip, ShoppingTooltip1, ShoppingTooltip2 }

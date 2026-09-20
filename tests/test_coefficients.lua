@@ -1,7 +1,8 @@
 -- Run from the addon root: lua5.4 tests/test_coefficients.lua
 
 local stub = dofile("tests/wow_stub.lua")
-stub.install()
+local mode = arg and arg[1] or "modern"
+stub.install(mode)
 
 stub.spells = {
     [116]   = { name = "Frostbolt",          castMs = 3000, level = 4 },
@@ -37,7 +38,7 @@ local function check(label, actual, expected)
 end
 
 local function part(spellID, index)
-    local name = select(1, GetSpellInfo(spellID))
+    local name = SCF.API.GetSpellName(spellID)
     local result = SCF:GetCoefficients(spellID, name)
     return result, result and result.parts[index]
 end
@@ -114,5 +115,20 @@ stub.shift = true
 SCF:Render(tooltip, 2061, "Flash Heal")
 check("shown with shift", #tooltip.lines > 0, true)
 
-print(string.format("%d checks, %d failures", checks, failures))
+-- Whatever the client exposes, the compat layer must answer.
+check("compat cast time", SCF.API.GetCastTime(116), 3.0)
+check("compat instant cast time", SCF.API.GetCastTime(139), nil)
+check("compat unknown spell", SCF.API.GetCastTime(999999), nil)
+check("compat name", SCF.API.GetSpellName(116), "Frostbolt")
+check("compat level", SCF.API.GetSpellLevel(116), 4)
+check("compat version", SCF.API.GetAddOnVersion("SpellCoeffsForever"), "test")
+
+-- The tooltip hook resolves the spell itself and must survive a client that
+-- exposes neither API shape.
+local hookTooltip = stub.newTooltip(2061)
+SpellCoeffsForeverDB.modifierOnly = false
+stub.fireSpellTooltip(hookTooltip)
+check("hook rendered", #hookTooltip.lines > 0, true)
+
+print(string.format("[%s] %d checks, %d failures", mode, checks, failures))
 os.exit(failures == 0 and 0 or 1)
