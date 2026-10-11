@@ -1,8 +1,8 @@
-## Interface: 11507
+## Interface: 11509, 16001
 ## Title: SpellCoeffsForever
-## Notes: Shows spell power / healing coefficients in spell tooltips for WoW Classic Era.
+## Notes: Shows spell power / healing coefficients in spell tooltips for WoW Classic Era and Forever.
 ## Author: admoney70
-## Version: 1.0.1
+## Version: 1.0.2
 ## SavedVariables: SpellCoeffsForeverDB
 ## X-Category: Combat
 ## X-License: MIT

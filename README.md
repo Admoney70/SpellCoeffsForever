@@ -1,10 +1,10 @@
 # SpellCoeffsForever
 
-A World of Warcraft Classic Era addon that adds spell power coefficients to spell
+A World of Warcraft Classic Era and Forever addon that adds spell power coefficients to spell
 tooltips, so you can see how much of your +damage or +healing a given spell and
 rank actually uses.
 
-![Interface](https://img.shields.io/badge/Interface-11507-blue)
+![Interface](https://img.shields.io/badge/Interface-11509%20%7C%2016001-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
 ## What it shows
@@ -30,8 +30,8 @@ than taken from known spell data.
 ## Installation
 
 1. Download or clone this repository.
-2. Copy the folder into `World of Warcraft/_classic_era_/Interface/AddOns/`,
-   named `SpellCoeffsForever`.
+2. Copy the folder into `World of Warcraft/_classic_era_/Interface/AddOns/`
+   (or `_classic_beta_` for the Forever beta), named `SpellCoeffsForever`.
 3. Restart the game, or run `/reload` if it is already running.
 
 The folder name must match the `.toc` file name for the client to load it.

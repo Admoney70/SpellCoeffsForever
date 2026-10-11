@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.0.2
+
+* The addon now loads on the WoW Forever beta (interface 16001) and on the
+  current Classic Era client (interface 11509) instead of showing as
+  incompatible.
+* CurseForge releases are tagged for both Classic Era and Forever.
+
 ## 1.0.1
 
 * Fixed an error on every spell tooltip on current Classic Era clients, where
