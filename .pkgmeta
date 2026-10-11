@@ -1,0 +1,9 @@
+package-as: SpellCoeffsForever
+
+manual-changelog:
+  filename: CHANGELOG.md
+  markup-type: markdown
+
+ignore:
+  - tests
+  - .editorconfig
