@@ -102,6 +102,13 @@ level to `Data.rankLevels` if your client returns 0 for a spell, and add an entr
 to `Data.overrides` with `exact = true` only when the value comes from spell data
 rather than from the formula.
 
+## Releasing
+
+Pushing a tag such as `v1.0.1` runs `.github/workflows/release.yml`, which
+packages the addon with the BigWigs packager and uploads it to CurseForge and
+as a GitHub release. It needs the `CF_API_KEY` repository secret and the
+`## X-Curse-Project-ID` line in `SpellCoeffsForever.toc`.
+
 ## License
 
 MIT, see [LICENSE](LICENSE).
