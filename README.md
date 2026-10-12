@@ -40,10 +40,15 @@ The folder name must match the `.toc` file name for the client to load it.
 
 ## Packaging
 
-`./build.sh` writes `dist/SpellCoeffsForever-<version>.zip` containing a single
-top-level `SpellCoeffsForever/` folder, which is the layout both the CurseForge
-app and a manual install expect. Pushing a `v*` tag runs the same script and
-attaches the zip to a GitHub release.
+Pushing a tag such as `v1.0.2` runs the release workflow, which packages the
+addon with the BigWigs packager for the Classic Era flavor and uploads it to
+CurseForge and to GitHub releases. It needs the `CF_API_KEY` repository secret
+and the `## X-Curse-Project-ID` line in `SpellCoeffsForever.toc`.
+
+For a zip without the workflow, `./build.sh` writes
+`dist/SpellCoeffsForever-<version>.zip` containing a single top-level
+`SpellCoeffsForever/` folder, which is the layout both the CurseForge app and a
+manual install expect.
 
 Two TOC files ship. `SpellCoeffsForever_Vanilla.toc` is the flavor file Classic
 Era clients and the CurseForge packager look for first, and

@@ -7,6 +7,7 @@
 ## X-Category: Combat
 ## X-License: MIT
 ## X-Website: https://github.com/Admoney70/SpellCoeffsForever
+## X-Curse-Project-ID: 1718515
 ## IconTexture: Interface\Icons\Spell_Holy_MagicalSentry
 
 Compat.lua

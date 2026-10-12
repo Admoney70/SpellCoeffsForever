@@ -2,6 +2,10 @@ package-as: SpellCoeffsForever
 
 enable-nolib-creation: no
 
+manual-changelog:
+  filename: CHANGELOG.md
+  markup-type: markdown
+
 ignore:
   - tests
   - .github
@@ -9,4 +13,3 @@ ignore:
   - .gitignore
   - .pkgmeta
   - build.sh
-  - CHANGELOG.md
