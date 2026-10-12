@@ -1,0 +1,25 @@
+name: release
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build the addon zip
+        run: ./build.sh
+      - name: Upload the zip as a build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: SpellCoeffsForever
+          path: dist/*.zip
+      - name: Attach the zip to the release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*.zip

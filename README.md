@@ -29,12 +29,37 @@ than taken from known spell data.
 
 ## Installation
 
-1. Download or clone this repository.
+Install it from CurseForge, or by hand:
+
+1. Download or clone this repository, or run `./build.sh` for a packaged zip.
 2. Copy the folder into `World of Warcraft/_classic_era_/Interface/AddOns/`,
    named `SpellCoeffsForever`.
 3. Restart the game, or run `/reload` if it is already running.
 
 The folder name must match the `.toc` file name for the client to load it.
+
+## Packaging
+
+`./build.sh` writes `dist/SpellCoeffsForever-<version>.zip` containing a single
+top-level `SpellCoeffsForever/` folder, which is the layout both the CurseForge
+app and a manual install expect. Pushing a `v*` tag runs the same script and
+attaches the zip to a GitHub release.
+
+Two TOC files ship. `SpellCoeffsForever_Vanilla.toc` is the flavor file Classic
+Era clients and the CurseForge packager look for first, and
+`SpellCoeffsForever.toc` is the fallback for clients that do not use flavor
+suffixes. Both carry the same interface version; confirm it against your client
+with `/dump (select(4, GetBuildInfo()))` after a patch.
+
+If the CurseForge app reports "Game was not found or not supported by the
+application", the cause is project metadata or the app's game detection rather
+than the addon:
+
+* The project must be listed under World of Warcraft, and each uploaded file
+  must be tagged with a Classic Era game version (1.15.x). A file left untagged,
+  or tagged only for Retail, gives the app no flavor to install into.
+* The app must have detected a Classic Era install. Check its WoW settings and
+  point it at the `_classic_era_` folder if the path is missing.
 
 ## Commands
 

@@ -1,0 +1,12 @@
+package-as: SpellCoeffsForever
+
+enable-nolib-creation: no
+
+ignore:
+  - tests
+  - .github
+  - .editorconfig
+  - .gitignore
+  - .pkgmeta
+  - build.sh
+  - CHANGELOG.md

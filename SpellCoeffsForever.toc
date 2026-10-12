@@ -1,11 +1,12 @@
-## Interface: 11507
+## Interface: 11509
 ## Title: SpellCoeffsForever
 ## Notes: Shows spell power / healing coefficients in spell tooltips for WoW Classic Era.
 ## Author: admoney70
-## Version: 1.0.1
+## Version: 1.0.2
 ## SavedVariables: SpellCoeffsForeverDB
 ## X-Category: Combat
 ## X-License: MIT
+## X-Website: https://github.com/Admoney70/SpellCoeffsForever
 ## IconTexture: Interface\Icons\Spell_Holy_MagicalSentry
 
 Compat.lua

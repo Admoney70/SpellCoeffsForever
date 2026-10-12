@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.0.2
+
+* Added `SpellCoeffsForever_Vanilla.toc`, the flavor file Classic Era clients
+  and the CurseForge packager look for before the plain TOC name, so uploads
+  are matched to Classic Era rather than left without a flavor.
+* Added `build.sh` and a release workflow producing a zip with the single
+  top-level addon folder the CurseForge app expects.
+* Raised the declared interface version to 11509.
+
 ## 1.0.1
 
 * Fixed an error on every spell tooltip on current Classic Era clients, where
